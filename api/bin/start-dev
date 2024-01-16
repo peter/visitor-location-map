@@ -1,0 +1,5 @@
+#!/bin/bash
+#
+# Start development server
+
+uvicorn src.main:app --reload
