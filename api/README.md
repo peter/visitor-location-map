@@ -1,4 +1,4 @@
-# visitor-location-map/api
+# Visitor Location Map - REST API
 
 REST API built with Python/FastAPI that serves locations based on IP for users of the web app. The location of users are stored in a SQLite database.
 
