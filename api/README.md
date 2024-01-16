@@ -18,7 +18,7 @@ pip install -r requirements.txt
 bin/start-dev 
 
 # Ping server
-curl http://localhost:8000
+curl http://localhost:8000/health
 ```
 
 ## Accessing the SQLite Database

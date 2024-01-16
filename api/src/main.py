@@ -1,9 +1,22 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import src.database as database
 import src.models.visitor as visitor
 import json
 
 app = FastAPI()
+
+origins = [
+    'http://localhost:5173',
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 database.connect()
 
@@ -28,6 +41,10 @@ location_info = {
 visitor.create('90.230.167.205', json.dumps(location_info))
 print(visitor.list())
 
-@app.get("/")
+@app.get('/health')
 async def root():
-    return {"message": "Hello World"}
+    return {'status': 'ok'}
+
+@app.get('/api/visitor-positions')
+async def visitor_positions():
+    return {'positions': [{'lat': 59.3688, 'lng': 18.118}]}

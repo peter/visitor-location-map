@@ -1,17 +1,56 @@
+import { useState, useEffect } from 'react';
 import {APIProvider, Map, Marker} from '@vis.gl/react-google-maps';
 import './App.css'
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
+
+type Position = {
+  lat: number;
+  lng: number;
+}
+
+function average(values: number[]): number | undefined {
+  if (!values || values.length === 0) return undefined;
+  return values.reduce((a, b) => a + b) / values.length;
+}
+
+async function fetchPositions(): Promise<Position[]> {
+  const result = await fetch(`${API_BASE_URL}/visitor-positions`);
+  // TODO: error handling?
+  const data = await result.json()
+  return data.positions;
+}
+
+function getCenterPosition(positions: Position[]): Position | undefined {
+  if (!positions || positions.length === 0) return undefined;
+  return {
+    lat: average(positions.map((position) => position.lat)) as number,
+    lng: average(positions.map((position) => position.lng)) as number,
+  }
+}
+
 
 const App = () => {
-  const position = {lat: 59.3688, lng: 18.118};
+  const [positions, setPositions] = useState<Position[] | []>([]);
+
+  useEffect(() => {
+    async function initializePositions() {
+      const initialPositions = await fetchPositions();
+      setPositions(initialPositions);  
+    }
+    initializePositions();
+  }, []);
+
+
+  const centerPosition = getCenterPosition(positions);
 
   return (
     <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
       <h1>Visitor Location Map</h1>
       <div style={{ height: "100%", width: "100%" }}>
-        <Map center={position} zoom={10}>
-          <Marker position={position} />
+        <Map center={centerPosition} zoom={10}>
+          {positions.map(position => <Marker position={position} />)}          
         </Map>    
       </div>
   </APIProvider>
