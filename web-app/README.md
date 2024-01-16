@@ -4,11 +4,14 @@ This is the web app that displays visitor locations. It was created using Vite, 
 
 ## Developer Setup
 
-To run the web app you need to have the REST API running and you need to set `GOOGLE_MAPS_API_KEY`.
+To run the web app you need to have the REST API running.
 
 ```sh
 # Install dependencies
 npm install
+
+# Copy the env file and set VITE_GOOGLE_MAPS_API_KEY
+cp .env.example .env
 
 # Start Development Server
 npm run dev

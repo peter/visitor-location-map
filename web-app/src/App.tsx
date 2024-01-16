@@ -1,35 +1,21 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {APIProvider, Map, Marker} from '@vis.gl/react-google-maps';
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
+
+const App = () => {
+  const position = {lat: 59.3688, lng: 18.118};
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
+      <h1>Visitor Location Map</h1>
+      <div style={{ height: "100%", width: "100%" }}>
+        <Map center={position} zoom={10}>
+          <Marker position={position} />
+        </Map>    
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+  </APIProvider>
+  );
+};
 
 export default App
