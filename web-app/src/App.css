@@ -12,6 +12,10 @@ body, html {
   text-align: center;
 }
 
+.country-select {
+  padding: 1.5em;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

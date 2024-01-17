@@ -28,6 +28,12 @@ curl http://localhost:8000/health
 curl -s http://localhost:8000/visitor-locations | jq
 ```
 
+If you start the server with the `TEST_LOCATIONS` you will get a few mock locations spread across the globe which is convenient for testing:
+
+```sh
+TEST_LOCATIONS=true bin/start-dev
+```
+
 ## Accessing the SQLite Database
 
 ```sh

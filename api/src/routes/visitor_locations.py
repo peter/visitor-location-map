@@ -1,3 +1,4 @@
+import os
 import traceback
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
@@ -7,6 +8,14 @@ import src.models.visitor_location as visitor_location
 from src.services.ip_geolocation_api import fetch_location_from_ip
 
 router = APIRouter()
+
+TEST_LOCATIONS = [
+    {'lat': 59.3688, 'lng': 18.118, 'country': 'Sweden', 'created_at': '2024-01-17 13:36:15.563035'}, # home
+    {'lat': 40.712776, 'lng': -74.005974, 'country': 'United States', 'created_at': '2024-01-17 13:36:15.563035'}, # NYC
+    {'lat': 48.856613, 'lng': 2.352222, 'country': 'France', 'created_at': '2024-01-17 13:36:15.563035'}, # Paris
+    {'lat': 34.052235, 'lng': -118.243683, 'country': 'United States', 'created_at': '2024-01-17 13:36:15.563035'}, # Log Angeles
+    {'lat': 22.396427, 'lng': 114.109497, 'country': 'China', 'created_at': '2024-01-17 13:36:15.563035'} # Hong Kong
+]
 
 def get_local_ip():
     url = 'https://api.ipify.org'
@@ -49,6 +58,9 @@ async def visitor_locations(request: Request) -> VisitorLocationsResponseBody:
         lat = float(location_info['lat'])
         lng = float(location_info['lon'])
         visitor_location.create(request_ip, lat, lng, location_info)
-    db_locations = visitor_location.list()
-    locations = [response_location(location) for location in db_locations]
+    if os.environ.get('TEST_LOCATIONS'):
+        locations = TEST_LOCATIONS
+    else:
+        db_locations = visitor_location.list()
+        locations = [response_location(location) for location in db_locations]
     return {'locations': locations}

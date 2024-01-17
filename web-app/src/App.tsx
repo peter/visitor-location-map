@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import {APIProvider, Map, Marker} from '@vis.gl/react-google-maps';
 import './App.css'
+import _ from 'lodash';
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
@@ -8,6 +10,8 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 type Location = {
   lat: number;
   lng: number;
+  country: string;
+  created_at: string;
 }
 
 function average(values: number[]): number | undefined {
@@ -31,6 +35,7 @@ function getCenterLocation(locations: Location[]): Location | undefined {
 
 
 const App = () => {
+  const [country, setCountry] = useState('');
   const [locations, setLocations] = useState<Location[] | []>([]);
 
   useEffect(() => {
@@ -41,15 +46,33 @@ const App = () => {
     initializeLocations();
   }, []);
 
+  const countries: string[] = _.uniq((locations || []).map(location => location.country));
+  const countryOptions = [
+    { value: '', label: 'All Countries' },
+    ...countries.map(country => ({ value: country, label: country }))
+  ];
+  const handleCountryChange = (event: any) => {
+    setCountry(event.target.value);
+  }
 
-  const centerLocation = getCenterLocation(locations);
+  const filteredLocations = country ? locations.filter(location => location.country === country) : locations;
+  const centerLocation = getCenterLocation(filteredLocations);
 
   return (
     <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
       <h1>Visitor Location Map</h1>
+
+      <div className="country-select">
+        {countryOptions.length > 1 && <select value={country} onChange={handleCountryChange}>
+         {countryOptions.map((option) => (
+           <option value={option.value}>{option.label}</option>
+         ))}
+        </select>}
+      </div>
+
       <div style={{ height: "100%", width: "100%" }}>
         <Map center={centerLocation} zoom={2}>
-          {locations.map(location => <Marker position={location} />)}
+          {filteredLocations.map(location => <Marker position={location} />)}
         </Map>    
       </div>
   </APIProvider>
