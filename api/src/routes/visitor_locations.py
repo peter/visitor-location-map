@@ -25,12 +25,14 @@ def response_location(location):
     return {
         'lat': location['lat'],
         'lng': location['lng'],
+        'country': location['location_info']['country'],
         'created_at': location['created_at']
     }
 
 class Location(BaseModel):
     lat: float
     lng: float
+    country: str
     created_at: str
 class VisitorLocationsResponseBody(BaseModel):
     locations: list[Location]

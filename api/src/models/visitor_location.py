@@ -5,6 +5,9 @@ from src.database import execute, find_one, find_all
 TABLE_NAME = 'visitor_locations'
 LIMIT = 1000
 
+def row_to_doc(row):
+    return { **row, 'location_info': json.loads(row['location_info']) }
+
 def create_schema():
     execute(f'''
         CREATE TABLE IF NOT EXISTS {TABLE_NAME}(
@@ -21,19 +24,21 @@ def create_schema():
     ''')
 
 def get(ip):
-    return find_one(f'''
+    row = find_one(f'''
                 SELECT *
                 FROM {TABLE_NAME}
                 WHERE ip = ?
             ''', (ip,))
+    return row_to_doc(row) if row else None
 
 def list():
-    return find_all(f'''
+    rows = find_all(f'''
                 SELECT *
                 FROM {TABLE_NAME}
                 ORDER BY created_at DESC
                 LIMIT ?
     ''', (LIMIT,))
+    return [row_to_doc(row) for row in rows]
 
 def create(ip, lat, lng, location_info):
     values = (ip, lat, lng, json.dumps(location_info), datetime.now())
