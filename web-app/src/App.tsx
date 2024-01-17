@@ -5,7 +5,7 @@ import './App.css'
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
-type Position = {
+type Location = {
   lat: number;
   lng: number;
 }
@@ -15,42 +15,41 @@ function average(values: number[]): number | undefined {
   return values.reduce((a, b) => a + b) / values.length;
 }
 
-async function fetchPositions(): Promise<Position[]> {
-  const result = await fetch(`${API_BASE_URL}/visitor-positions`);
-  // TODO: error handling?
+async function fetchLocations(): Promise<Location[]> {
+  const result = await fetch(`${API_BASE_URL}/visitor-locations`);
   const data = await result.json()
-  return data.positions;
+  return data.locations;
 }
 
-function getCenterPosition(positions: Position[]): Position | undefined {
-  if (!positions || positions.length === 0) return undefined;
+function getCenterLocation(locations: Location[]): Location | undefined {
+  if (!locations || locations.length === 0) return undefined;
   return {
-    lat: average(positions.map((position) => position.lat)) as number,
-    lng: average(positions.map((position) => position.lng)) as number,
+    lat: average(locations.map((location) => location.lat)) as number,
+    lng: average(locations.map((location) => location.lng)) as number,
   }
 }
 
 
 const App = () => {
-  const [positions, setPositions] = useState<Position[] | []>([]);
+  const [locations, setLocations] = useState<Location[] | []>([]);
 
   useEffect(() => {
-    async function initializePositions() {
-      const initialPositions = await fetchPositions();
-      setPositions(initialPositions);  
+    async function initializeLocations() {
+      const initialLocations = await fetchLocations();
+      setLocations(initialLocations);  
     }
-    initializePositions();
+    initializeLocations();
   }, []);
 
 
-  const centerPosition = getCenterPosition(positions);
+  const centerLocation = getCenterLocation(locations);
 
   return (
     <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
       <h1>Visitor Location Map</h1>
       <div style={{ height: "100%", width: "100%" }}>
-        <Map center={centerPosition} zoom={10}>
-          {positions.map(position => <Marker position={position} />)}          
+        <Map center={centerLocation} zoom={2}>
+          {locations.map(location => <Marker position={location} />)}
         </Map>    
       </div>
   </APIProvider>
