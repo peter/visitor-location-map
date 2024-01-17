@@ -21,10 +21,17 @@ bin/start-dev
 curl http://localhost:8000/health
 ```
 
+## Invoking the API with Curl
+
+```sh
+# The /visitor-locations stores the location of the request IP if it doesn't exist and lists all IPs (limit 1000)
+curl -s http://localhost:8000/visitor-locations | jq
+```
+
 ## Accessing the SQLite Database
 
 ```sh
-sqlite3 visitor-location-map.db
-.schema visitors
-select * from visitors;
+sqlite3 sqlite-data/visitor-location-map.db
+.schema visitor_locations
+select * from visitor_location;
 ```

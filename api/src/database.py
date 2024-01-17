@@ -1,4 +1,8 @@
 import sqlite3
+from contextlib import closing
+
+# NOTE: we could have the db in memory as well with path ':memory:'
+DATA_FILE_PATH = 'sqlite-data/visitor-location-map.db'
 
 conn = None
 
@@ -13,7 +17,22 @@ def get_conn():
     return conn
 
 def connect():
-    global conn
-    # NOTE: we could have the db in memory as well with sqlite3.connect(":memory:")
-    conn = sqlite3.connect('sqlite-data/visitor-location-map.db')
+    global conn    
+    conn = sqlite3.connect(DATA_FILE_PATH)
     conn.row_factory = dict_factory
+
+def execute(*args, **kwargs):
+    with closing(get_conn().cursor()) as cursor:
+        result = cursor.execute(*args, **kwargs)
+        get_conn().commit()
+        return result
+
+def find_one(*args, **kwargs):
+    with closing(get_conn().cursor()) as cursor:
+        result = cursor.execute(*args, **kwargs)
+        return result.fetchone()
+
+def find_all(*args, **kwargs):
+    with closing(get_conn().cursor()) as cursor:
+        result = cursor.execute(*args, **kwargs)
+        return result.fetchall()
