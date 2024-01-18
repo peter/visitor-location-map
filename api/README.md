@@ -44,6 +44,36 @@ select * from visitor_locations
 curl -s http://localhost:8000/visitor-locations | jq
 ```
 
+## Deployment
+
+Deployed to Heroku at [visitor-location-map-30ae10c6839e.herokuapp.com](https://visitor-location-map-30ae10c6839e.herokuapp.com/) in the EU region (AWS region eu-west-1 / Ireland):
+
+```sh
+export APP_NAME=visitor-location-map
+
+# Create Heroku app
+heroku apps:create --region eu $APP_NAME
+
+# Add Postgres addon
+heroku addons:create heroku-postgresql:mini -a $APP_NAME
+
+# Deploy only the api-server sub directory to Heroku
+git subtree push --prefix api heroku main
+
+# Check API is up on Heroku
+curl -s https://visitor-location-map-30ae10c6839e.herokuapp.com/health | jq
+
+# Various useful Heroku commands
+heroku logs --tail -a $APP_NAME
+heroku ps -a $APP_NAME
+heroku pg:psql
+heroku restart -a $APP_NAME
+heroku info -a $APP_NAME
+heroku config -a $APP_NAME
+heroku labs:enable runtime-dyno-metadata -a $APP_NAME
+heroku run printenv -a $APP_NAME
+```
+
 ## Testing the Country Filter
 
 If you start the server with the `TEST_LOCATIONS` you will get a few mock locations spread across the globe which is convenient for testing the country filter:

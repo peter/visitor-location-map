@@ -7,9 +7,12 @@ import _ from 'lodash';
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
-type Location = {
+type LatLng = {
   lat: number;
   lng: number;
+}
+
+type Location = LatLng & {
   country: string;
   created_at: string;
 }
@@ -25,7 +28,7 @@ async function fetchLocations(): Promise<Location[]> {
   return data.locations;
 }
 
-function getCenterLocation(locations: Location[]): Location | undefined {
+function getCenterLocation(locations: Location[]): LatLng | undefined {
   if (!locations || locations.length === 0) return undefined;
   return {
     lat: average(locations.map((location) => location.lat)) as number,

@@ -19,3 +19,22 @@ npm run dev
 # Open a browser
 open http://localhost:5173
 ```
+
+## Deployment
+
+The app is deployed using [Vercel](https://vercel.com) to [visitor-location-ajuxlow7v-peter1.vercel.app](https://visitor-location-ajuxlow7v-peter1.vercel.app/):
+
+```sh
+# Build/test locally:
+npm run build
+npm run preview
+
+# Install Vercel CLI and set up Vercel account
+npm i -g vercel
+
+# Preview/stage deploy
+vercel
+
+# Production deploy
+vercel --prod
+```
