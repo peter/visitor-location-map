@@ -36,13 +36,13 @@ def execute(sql, values = ()):
         conn.commit()
         return result
 
-def query(sql, values):
+def query(sql, values = ()):
     with closing(conn.cursor()) as cursor:
         sqlite_sql = convert_placeholders(sql)
         result = cursor.execute(sqlite_sql, values)
         return result.fetchall()
 
-def query_one(sql, values):
+def query_one(sql, values = ()):
     with closing(conn.cursor()) as cursor:
         sqlite_sql = convert_placeholders(sql)
         result = cursor.execute(sqlite_sql, values)

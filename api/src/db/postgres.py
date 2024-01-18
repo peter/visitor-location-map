@@ -22,11 +22,11 @@ def execute(sql, values = []):
     cur.execute(sql, values)
     return cur
 
-def query(sql, values):
+def query(sql, values = []):
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute(sql, values)
     return list(map(dict, cur.fetchall()))
 
-def query_one(sql, values):
+def query_one(sql, values = []):
     rows = query(sql, values)
     return rows[0] if len(rows) > 0 else None

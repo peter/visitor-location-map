@@ -23,6 +23,10 @@ def create_schema():
         ON {TABLE_NAME}(created_at)
     ''')
 
+def count():
+    row = db.query_one(f'SELECT COUNT(*) count from {TABLE_NAME}')
+    return row['count']
+
 def get(ip):
     row = db.query_one(f'''
                 SELECT *
