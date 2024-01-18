@@ -35,7 +35,7 @@ def response_location(location):
         'lat': location['lat'],
         'lng': location['lng'],
         'country': location['location_info']['country'],
-        'created_at': location['created_at']
+        'created_at': str(location['created_at'])
     }
 
 class Location(BaseModel):

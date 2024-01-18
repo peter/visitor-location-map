@@ -63,7 +63,7 @@ const App = () => {
       <h1>Visitor Location Map</h1>
 
       <div className="country-select">
-        {countryOptions.length > 1 && <select value={country} onChange={handleCountryChange}>
+        {countryOptions.length > 2 && <select value={country} onChange={handleCountryChange}>
          {countryOptions.map((option) => (
            <option value={option.value}>{option.label}</option>
          ))}
