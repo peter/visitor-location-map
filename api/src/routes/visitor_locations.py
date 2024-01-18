@@ -24,6 +24,8 @@ def get_local_ip():
 
 def get_request_ip(request: Request):
     try:
+        if os.environ.get('REQUEST_TEST_IP'):
+            return os.environ.get('REQUEST_TEST_IP')
         ip = request.client.host
         return get_local_ip() if ip == '127.0.0.1' else ip
     except Exception as error:

@@ -1,8 +1,9 @@
+import os
 import sqlite3
 from contextlib import closing
 
 # NOTE: we could have the db in memory as well with path ':memory:'
-DATA_FILE_PATH = 'sqlite-data/visitor-location-map.db'
+SQLITE_DATA_PATH = os.environ.get('SQLITE_DATA_PATH', 'sqlite-data/visitor-location-map.db')
 
 conn = None
 
@@ -24,8 +25,8 @@ def convert_placeholders(sql):
 #############################################################
 
 def connect():
-    global conn    
-    conn = sqlite3.connect(DATA_FILE_PATH)
+    global conn
+    conn = sqlite3.connect(SQLITE_DATA_PATH)
     conn.row_factory = dict_factory
 
 def execute(sql, values = ()):

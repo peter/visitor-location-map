@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# Run tests
+
+DATABASE=${DATABASE:-postgres}
+DATABASE_NAME=visitor-location-map-test
+
+if [ "$DATABASE" = "postgres" ]
+then
+    dropdb -U postgres $DATABASE_NAME --if-exists
+    createdb -U postgres $DATABASE_NAME
+fi
+
+DATABASE=$DATABASE DATABASE_NAME=$DATABASE_NAME SQLITE_DATA_PATH=:memory: PYTHONPATH=. pytest -v --import-mode importlib -s

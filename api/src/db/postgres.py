@@ -3,7 +3,7 @@ import psycopg2.extras
 import os
 import re
 
-DATABASE_NAME = 'visitor-location-map'
+DATABASE_NAME = os.environ.get('DATABASE_NAME', 'visitor-location-map')
 DATABASE_URL = os.environ.get('DATABASE_URL', f'postgresql://postgres:@localhost/{DATABASE_NAME}')
 
 #############################################################
