@@ -1,6 +1,6 @@
 # Visitor Location Map - Web App
 
-This is the web app that displays visitor locations. It was created using Vite, React, TypeScript, Tailwind CSS, and Google Maps.
+This is the web app that displays visitor locations. It was created using Vite, React, TypeScript, and Google Maps.
 
 ## Developer Setup
 

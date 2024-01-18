@@ -32,15 +32,16 @@ createdb -U postgres visitor-location-map
 # Start the server with Postgres
 DATABASE=postgres bin/start-dev
 
-# Connect with psql to check the database contents
+# Connect with psql to inspect the database data
 psql -U postgres visitor-location-map
 select * from visitor_locations
 ```
 
 ## Invoking the API with Curl
 
+The `/visitor-locations` endpoint stores the location of the request IP if it doesn't exist and lists all known IPs in descending creation order with a limit of 1000:
+
 ```sh
-# The /visitor-locations stores the location of the request IP if it doesn't exist and lists all IPs (limit 1000)
 curl -s http://localhost:8000/visitor-locations | jq
 ```
 
@@ -90,5 +91,5 @@ TEST_LOCATIONS=true bin/start-dev
 ```sh
 sqlite3 sqlite-data/visitor-location-map.db
 .schema visitor_locations
-select * from visitor_location;
+select * from visitor_locations;
 ```

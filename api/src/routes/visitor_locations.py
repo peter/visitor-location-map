@@ -53,7 +53,7 @@ async def visitor_locations(request: Request) -> VisitorLocationsResponseBody:
     request_ip = get_request_ip(request)
     # Check if we have the IP in the database
     location = visitor_location.get(request_ip)
-    print(f'location in db for request_ip={request_ip}: {location}')
+    print(f'DEBUG: location in db for request_ip={request_ip}: {location}')
     if location is None:
         # We have not seen the visitor IP before - lookup location and save it in the database
         location_info = fetch_location_from_ip(request_ip)
