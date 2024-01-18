@@ -22,7 +22,7 @@ open http://localhost:5173
 
 ## Deployment
 
-The app is deployed using [Vercel](https://vercel.com) to [visitor-location-ajuxlow7v-peter1.vercel.app](https://visitor-location-ajuxlow7v-peter1.vercel.app/):
+The app is deployed using [Vercel](https://vercel.com) to [visitor-location-map.vercel.app](https://visitor-location-map.vercel.app):
 
 ```sh
 # Build/test locally:

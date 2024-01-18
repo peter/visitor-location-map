@@ -57,11 +57,14 @@ heroku apps:create --region eu $APP_NAME
 # Add Postgres addon
 heroku addons:create heroku-postgresql:mini -a $APP_NAME
 
+# Make sure Postgres is used in production instead of SQLite
+heroku config:set DATABASE=postgres -a $APP_NAME
+
 # Deploy only the api-server sub directory to Heroku
 git subtree push --prefix api heroku main
 
 # Check API is up on Heroku
-curl -s https://visitor-location-map-30ae10c6839e.herokuapp.com/health | jq
+curl -s -i https://visitor-location-map-30ae10c6839e.herokuapp.com/health
 
 # Various useful Heroku commands
 heroku logs --tail -a $APP_NAME
