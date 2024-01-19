@@ -2,7 +2,7 @@
 #
 # Run tests
 
-DATABASE=${DATABASE:-postgres}
+DATABASE=${DATABASE:-sqlite}
 DATABASE_NAME=visitor-location-map-test
 
 if [ "$DATABASE" = "postgres" ]

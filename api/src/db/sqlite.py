@@ -26,7 +26,7 @@ def convert_placeholders(sql):
 
 def connect():
     global conn
-    conn = sqlite3.connect(SQLITE_DATA_PATH)
+    conn = sqlite3.connect(SQLITE_DATA_PATH, check_same_thread=False)
     conn.row_factory = dict_factory
 
 def execute(sql, values = ()):
